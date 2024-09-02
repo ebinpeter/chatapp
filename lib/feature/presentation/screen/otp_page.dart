@@ -1,3 +1,5 @@
+import 'package:chattick/feature/presentation/screen/details_page.dart';
+import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
 import 'package:chattick/feature/presentation/screen/stat_msg_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +21,8 @@ class _OtpPageState extends State<OtpPage> {
   void initState() {
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Coloure().BackGround, // Set the status bar color
-    statusBarIconBrightness: Brightness.dark, // Light icons for dark background
+    statusBarColor: Coloure().BackGround,
+    statusBarIconBrightness: Brightness.dark,
   ));
 
     // TODO: implement initState
@@ -31,6 +33,10 @@ class _OtpPageState extends State<OtpPage> {
     return Scaffold(
       backgroundColor: Coloure().BackGround,
       resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        backgroundColor: Coloure().BackGround,
+        automaticallyImplyLeading: true,
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -125,7 +131,7 @@ class _OtpPageState extends State<OtpPage> {
   void _navigateToNextPage() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => StatMsgPage(), // Replace with your target page
+        builder: (context) => DetailsPage(), // Replace with your target page
       ),
     );
   }
