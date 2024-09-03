@@ -30,6 +30,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         backgroundColor: Coloure().BackGround,
         automaticallyImplyLeading: true,

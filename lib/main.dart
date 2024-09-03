@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'feature/presentation/screen/contact.dart';
 import 'feature/presentation/screen/stat_msg_page.dart';
 import 'firebase_options.dart';
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false,
-      home:StartMsgPage()
+      home:ContactsList()
+      // StartMsgPage()
     );
   }
 }
