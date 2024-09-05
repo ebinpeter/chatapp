@@ -1,3 +1,4 @@
+import 'package:chattick/config/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -126,10 +127,11 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                         child: CustomButton(
                           text: "Continue",
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => OtpPage()),
-                            );
+                            Firebase_api().sendOTP(phoneNumber: "9746379976");
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => OtpPage()),
+                            // );
                           },
                         ),
                       ),

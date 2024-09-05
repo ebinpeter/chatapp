@@ -107,7 +107,7 @@ class _OtpPageState extends State<OtpPage> {
 
     return Center(
       child: Pinput(
-        length: 4,
+        length: 6,
         defaultPinTheme: defaultPinTheme,
         focusedPinTheme: defaultPinTheme.copyWith(
           decoration: BoxDecoration(
@@ -122,7 +122,8 @@ class _OtpPageState extends State<OtpPage> {
         },
         onCompleted: (pin) {
           _otpCode = pin;
-          _navigateToNextPage();
+
+          // _navigateToNextPage();
         },
       ),
     );

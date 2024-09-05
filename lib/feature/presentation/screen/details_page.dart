@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:chattick/feature/presentation/widget/textfeild.dart';
+import 'package:flutter/services.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
+import '../widget/elevated_button.dart';
+import 'contact.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -15,26 +18,31 @@ final TextEditingController lastNameController = TextEditingController();
 
 class _DetailsPageState extends State<DetailsPage> {
   @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Coloure().BackGround,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+    // TODO: implement initState
+    super.initState();
+  }
+  
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Coloure().BackGround,
       appBar: AppBar(
         backgroundColor: Coloure().BackGround,
-        title: Text('Your Profile'),
+        title: Text('Your Profile',),
         automaticallyImplyLeading: true,
-
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //   onPressed: () {
-        //     // Navigator.pop(context); // Navigate back to the previous screen
-        //   },
-        // ),
+        leading: IconButton(onPressed: () {
+          Navigator.pop(context);
+        }, icon:Icon(Icons.arrow_back)),
       ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             bool isPortrait = constraints.maxHeight > constraints.maxWidth;
-
             return SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.all(
@@ -91,6 +99,26 @@ class _DetailsPageState extends State<DetailsPage> {
                       height: MediaQueryUtil.heightPercentage(context, isPortrait ? 8 : 16),
                       width: MediaQueryUtil.widthPercentage(context, isPortrait ? 90 : 70),
                     ),
+                    SizedBox(
+                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 35 : 18),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: CustomButton(
+                          text: "Continue",
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ContactsList()),
+                            );
+                          },
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

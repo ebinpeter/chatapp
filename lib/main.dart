@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false,
-      home:ContactsList()
-      // StartMsgPage()
+      home:
+      // ContactsList()
+      StartMsgPage()
     );
   }
 }
