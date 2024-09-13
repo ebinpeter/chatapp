@@ -1,7 +1,14 @@
+//
+// // import 'package:googleapis/servicecontrol/v1.dart' as servicecontrol;
+// import 'package:googleapis_auth/googleapis_auth.dart' as auth;
+// import 'package:http/http.dart' as http;
+//
 // class Pushnotification {
-//   static Future<String>getAccessToken()async{
-//     final serviceAccounjson =
-//     {
+//
+//
+//   static Future<String> getAccessToken() async {
+//     // Service account JSON content (ideally, load it securely from a file or environment variable)
+//     final serviceAccountJson = {
 //       "type": "service_account",
 //       "project_id": "mychat-5b639",
 //       "private_key_id": "a36aae0fad5f67cb454aa0c6fbe74d17bb4bb0a2",
@@ -11,11 +18,31 @@
 //       "auth_uri": "https://accounts.google.com/o/oauth2/auth",
 //       "token_uri": "https://oauth2.googleapis.com/token",
 //       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-//       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mychattick%40mychat-5b639.iam.gserviceaccount.com",
+//       "client_x509_cert_url":
+//       "https://www.googleapis.com/robot/v1/metadata/x509/mychattick%40mychat-5b639.iam.gserviceaccount.com",
 //       "universe_domain": "googleapis.com"
 //     };
-//   }
-//   static sendNotification()async{
 //
+//     // Scopes for the Firebase and Google services
+//     List<String> scopes = [
+//       "https://www.googleapis.com/auth/cloud-platform",
+//       "https://www.googleapis.com/auth/firebase.messaging",
+//       "https://www.googleapis.com/auth/userinfo.email",
+//       "https://www.googleapis.com/auth/firebase.database",
+//     ];
+//
+//     final credentials = auth.ServiceAccountCredentials.fromJson(serviceAccountJson);
+//
+//     // Create an authenticated client using the service account
+//     // final client = await auth.clientViaServiceAccount(credentials, scopes);
+//     print('Client created and access credentials obtained');
+//
+//     try {
+//       // Return the access token
+//       return client.credentials.accessToken.data;
+//     } catch (e) {
+//       // client.close();
+//       throw Exception('Failed to get access token: $e');
+//     }
 //   }
 // }
