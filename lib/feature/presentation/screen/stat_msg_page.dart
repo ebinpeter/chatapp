@@ -5,13 +5,27 @@ import 'package:chattick/core/textstyle.dart';
 import 'package:chattick/core/media_query.dart';
 import 'package:chattick/feature/presentation/widget/elevated_button.dart';
 import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
-import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:rive/rive.dart';
 
 import '../../../config/access_firebase_token.dart';
 
-class StartMsgPage extends StatelessWidget {
+class StartMsgPage extends StatefulWidget {
   const StartMsgPage({Key? key}) : super(key: key);
+
+  @override
+  State<StartMsgPage> createState() => _StartMsgPageState();
+}
+
+class _StartMsgPageState extends State<StartMsgPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Coloure().BackGround,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +97,7 @@ class StartMsgPage extends StatelessWidget {
                             AccessTokenFirebase tokenFetcher = AccessTokenFirebase();
                             String token = await tokenFetcher.getAccessToke();
                             print("Access Token: $token");
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
                           },
                         ),
                       ),

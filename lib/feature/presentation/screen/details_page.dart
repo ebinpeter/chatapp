@@ -31,14 +31,14 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Coloure().BackGround,
-      appBar: AppBar(
-        backgroundColor: Coloure().BackGround,
-        title: Text('Your Profile',),
-        automaticallyImplyLeading: true,
-        leading: IconButton(onPressed: () {
-          Navigator.pop(context);
-        }, icon:Icon(Icons.arrow_back)),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Coloure().BackGround,
+      //   title: Text('Your Profile',),
+      //   automaticallyImplyLeading: true,
+      //   leading: IconButton(onPressed: () {
+      //     Navigator.pop(context);
+      //   }, icon:Icon(Icons.arrow_back)),
+      // ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

@@ -1,3 +1,4 @@
+import 'package:chattick/config/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,8 @@ Future<void> main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseCM().initNotification();
+  // await FirebaseCM().requestNotificationPermission();
   runApp(MyApp());
 }
 

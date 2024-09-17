@@ -17,6 +17,7 @@ class PhoneNumberPage extends StatefulWidget {
 
 class _PhoneNumberPageState extends State<PhoneNumberPage> {
   PhoneNumber number = PhoneNumber(isoCode: 'IN');
+  FirebaseApi firebaseApi = FirebaseApi();
 
   @override
   void initState() {
@@ -31,7 +32,6 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: Coloure().BackGround,
         automaticallyImplyLeading: true,
@@ -52,14 +52,16 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 10 : 5),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 10 : 5),
                     ),
                     Text(
                       "Enter Your Phone Number",
                       style: style().TheBigHead(context),
                     ),
                     SizedBox(
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 2 : 1),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 2 : 1),
                     ),
                     Text(
                       "Please confirm your country code and enter your phone number",
@@ -67,19 +69,27 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 5 : 3),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 5 : 3),
                     ),
                     Container(
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 8 : 16),
-                      width: MediaQueryUtil.widthPercentage(context, isPortrait ? 90 : 70),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 8 : 16),
+                      width: MediaQueryUtil.widthPercentage(
+                          context, isPortrait ? 90 : 70),
                       decoration: BoxDecoration(
                         color: Coloure().FeildColor,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      padding: EdgeInsets.all( MediaQueryUtil.heightPercentage(context, isPortrait ? 1 : 0),),
+                      padding: EdgeInsets.all(
+                        MediaQueryUtil.heightPercentage(
+                            context, isPortrait ? 1 : 0),
+                      ),
                       child: InternationalPhoneNumberInput(
                         autoFocusSearch: true,
                         onInputChanged: (number) {
+                          this.number = number;
+
                           // Handle input change
                         },
                         onInputValidated: (bool value) {
@@ -109,14 +119,16 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                           hintText: 'Phone Number',
                           hintStyle: style().FeildInput(context),
                         ),
-                        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                        keyboardType: TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
                         onSaved: (number) {
                           print('On Saved: $number');
                         },
                       ),
                     ),
                     SizedBox(
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 38 : 18),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 38 : 18),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -127,11 +139,11 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                         child: CustomButton(
                           text: "Continue",
                           onPressed: () {
-                            Firebase_api().sendOTP(phoneNumber: "9746379976");
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => OtpPage()),
-                            // );
+                            String fullPhoneNumber = number.phoneNumber!;
+
+                            // Firebase_api().sendOTP(phoneNumber: "9746379976");
+                            firebaseApi.sendOTP(
+                                phoneNumber: fullPhoneNumber, context: context);
                           },
                         ),
                       ),

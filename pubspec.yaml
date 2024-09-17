@@ -47,6 +47,10 @@ dependencies:
   http: ^1.2.2
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
+  flutter_local_notifications: ^17.2.2
+  firebase_messaging: ^15.1.1
+  permission_handler: ^11.3.1
+  get: ^4.6.6
 
 
 dev_dependencies:

@@ -1,21 +1,26 @@
 import 'package:chattick/feature/presentation/screen/details_page.dart';
 import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
 import 'package:chattick/feature/presentation/screen/stat_msg_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
+import '../../../config/firebase.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
 import '../../../core/textstyle.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  const OtpPage({super.key,required this.verificationId});
+  final String verificationId; // Require this in constructor
 
   @override
   State<OtpPage> createState() => _OtpPageState();
 }
 
 class _OtpPageState extends State<OtpPage> {
+  FirebaseApi firebaseApi = FirebaseApi();
+  // late final String verificationId;
   String _otpCode = '';
 @override
   void initState() {
@@ -122,18 +127,37 @@ class _OtpPageState extends State<OtpPage> {
         },
         onCompleted: (pin) {
           _otpCode = pin;
-
-          // _navigateToNextPage();
+          _verifyOtp();
         },
       ),
     );
   }
 
-  void _navigateToNextPage() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => DetailsPage(), // Replace with your target page
-      ),
-    );
+  void _verifyOtp() async {
+    if (_otpCode.isEmpty || widget.verificationId.isEmpty) {
+      print("eeeeee${widget.verificationId}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("OTP or verification ID is missing")),
+      );
+      return;
+    }
+
+    try {
+      // Verify the OTP using Firebase API
+      await firebaseApi.verifyOTP(otp: _otpCode, context: context,authVerificationIdss: widget.verificationId);
+      // _navigateToNextPage();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to verify OTP: $e")),
+      );
+    }
   }
+
+  // void _navigateToNextPage() {
+  //   Navigator.of(context).pushReplacement(
+  //     MaterialPageRoute(
+  //       builder: (context) => DetailsPage(), // Replace with your target page
+  //     ),
+  //   );
+  // }
 }
