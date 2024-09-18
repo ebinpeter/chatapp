@@ -1,17 +1,15 @@
+import 'package:chattick/core/colors.dart';
+import 'package:chattick/core/media_query.dart';
+import 'package:chattick/core/textstyle.dart';
+import 'package:chattick/feature/presentation/widget/elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:chattick/core/colors.dart';
-import 'package:chattick/core/textstyle.dart';
-import 'package:chattick/core/media_query.dart';
-import 'package:chattick/feature/presentation/widget/elevated_button.dart';
-import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
 import 'package:rive/rive.dart';
 
-import '../../../config/access_firebase_token.dart';
 import '../../../config/firebase_messaging.dart';
 
 class StartMsgPage extends StatefulWidget {
-  const StartMsgPage({Key? key}) : super(key: key);
+  const StartMsgPage({super.key});
 
   @override
   State<StartMsgPage> createState() => _StartMsgPageState();
@@ -56,7 +54,7 @@ class _StartMsgPageState extends State<StartMsgPage> {
                       height: isPortrait
                           ? MediaQueryUtil.heightPercentage(context, 30)
                           : MediaQueryUtil.heightPercentage(context, 30),
-                      child:  RiveAnimation.asset(
+                      child: const RiveAnimation.asset(
                         'asset/animation/untitled.riv',
                         fit: BoxFit.contain,
                       ),
@@ -77,14 +75,12 @@ class _StartMsgPageState extends State<StartMsgPage> {
                           : MediaQueryUtil.heightPercentage(context, 8),
                     ),
                     TextButton(
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                       child: Text(
-                        'Terms & Privacy Policy',
+                        'Click on the continue button to receive notification',
                         style: style().TheSmallHead(context),
                       ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -93,11 +89,9 @@ class _StartMsgPageState extends State<StartMsgPage> {
                         alignment: Alignment.bottomCenter,
                         child: CustomButton(
                           text: "Continue",
-                          onPressed: ()async {
-                            AccessTokenFirebase tokenFetcher = AccessTokenFirebase();
-                            String token = await tokenFetcher.getAccessToke();
-                            print("Access Token: $token");
-                            FirebaseCM().sendTokenNotification(token, "chattick", "hi everyone");
+                          onPressed: () async {
+                            FirebaseCM().sendTopicNotification(
+                                'notification', "Coding With Mukund", "Please share and subscribe my channel");
 
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
                           },
