@@ -2,6 +2,7 @@ import 'package:chattick/core/colors.dart';
 import 'package:chattick/core/media_query.dart';
 import 'package:chattick/core/textstyle.dart';
 import 'package:chattick/feature/presentation/widget/elevated_button.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
@@ -90,6 +91,10 @@ class _StartMsgPageState extends State<StartMsgPage> {
                         child: CustomButton(
                           text: "Continue",
                           onPressed: () async {
+                          //Important  //to send token notification you need user device token
+                            //to generate user token use
+                            //await FirebaseMessaging.instance.getToken();
+
                             FirebaseCM().sendTopicNotification(
                                 'notification', "Coding With Mukund", "Please share and subscribe my channel");
 
