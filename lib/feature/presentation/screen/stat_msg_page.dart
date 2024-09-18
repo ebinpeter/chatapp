@@ -8,6 +8,7 @@ import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
 import 'package:rive/rive.dart';
 
 import '../../../config/access_firebase_token.dart';
+import '../../../config/firebase_messaging.dart';
 
 class StartMsgPage extends StatefulWidget {
   const StartMsgPage({Key? key}) : super(key: key);
@@ -93,11 +94,12 @@ class _StartMsgPageState extends State<StartMsgPage> {
                         child: CustomButton(
                           text: "Continue",
                           onPressed: ()async {
-                            // AccessToken accessetokengetter = AccessToken();
                             AccessTokenFirebase tokenFetcher = AccessTokenFirebase();
                             String token = await tokenFetcher.getAccessToke();
                             print("Access Token: $token");
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
+                            FirebaseCM().sendTokenNotification(token, "chattick", "hi everyone");
+
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
                           },
                         ),
                       ),

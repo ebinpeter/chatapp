@@ -104,7 +104,7 @@ class FirebaseCM {
         }
       };
       // AccessTokenFirebase tokenFetcher = AccessTokenFirebase();
-      String uri ="POST https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send";
+      String uri =" https://fcm.googleapis.com/v1/projects/mychat-5b639/messages:send";
       String Acces_tokenKey = await AccessTokenFirebase().getAccessToke();
       await http.post(Uri.parse(uri),
       headers: {
