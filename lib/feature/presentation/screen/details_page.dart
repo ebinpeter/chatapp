@@ -1,3 +1,5 @@
+import 'package:chattick/config/firebase.dart';
+import 'package:chattick/core/firebase_const.dart';
 import 'package:flutter/material.dart';
 import 'package:chattick/feature/presentation/widget/textfeild.dart';
 import 'package:flutter/services.dart';
@@ -26,19 +28,11 @@ class _DetailsPageState extends State<DetailsPage> {
     // TODO: implement initState
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Coloure().BackGround,
-      // appBar: AppBar(
-      //   backgroundColor: Coloure().BackGround,
-      //   title: Text('Your Profile',),
-      //   automaticallyImplyLeading: true,
-      //   leading: IconButton(onPressed: () {
-      //     Navigator.pop(context);
-      //   }, icon:Icon(Icons.arrow_back)),
-      // ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -83,24 +77,33 @@ class _DetailsPageState extends State<DetailsPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: MediaQueryUtil.heightPercentage(context, isPortrait ? 5 : 3)),
+                    SizedBox(
+                        height: MediaQueryUtil.heightPercentage(
+                            context, isPortrait ? 5 : 3)),
                     CustomTextField(
                       labelText: "First Name",
                       controller: firstNameController,
                       isRequired: true,
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 8 : 16),
-                      width: MediaQueryUtil.widthPercentage(context, isPortrait ? 90 : 70),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 8 : 16),
+                      width: MediaQueryUtil.widthPercentage(
+                          context, isPortrait ? 90 : 70),
                     ),
-                    SizedBox(height: MediaQueryUtil.heightPercentage(context, isPortrait ? 3 : 2)),
+                    SizedBox(
+                        height: MediaQueryUtil.heightPercentage(
+                            context, isPortrait ? 3 : 2)),
                     CustomTextField(
                       labelText: "Last Name",
                       controller: lastNameController,
                       isRequired: false,
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 8 : 16),
-                      width: MediaQueryUtil.widthPercentage(context, isPortrait ? 90 : 70),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 8 : 16),
+                      width: MediaQueryUtil.widthPercentage(
+                          context, isPortrait ? 90 : 70),
                     ),
                     SizedBox(
-                      height: MediaQueryUtil.heightPercentage(context, isPortrait ? 35 : 18),
+                      height: MediaQueryUtil.heightPercentage(
+                          context, isPortrait ? 35 : 18),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -110,10 +113,12 @@ class _DetailsPageState extends State<DetailsPage> {
                         alignment: Alignment.bottomCenter,
                         child: CustomButton(
                           text: "Continue",
-                          onPressed: () {
+                          onPressed: () async {
+                            await FirebaseApi().updateUserDetails(firstNameController.text.trim(), lastNameController.text.trim());
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ContactsList()),
+                              MaterialPageRoute(
+                                  builder: (context) => ContactsList()),
                             );
                           },
                         ),

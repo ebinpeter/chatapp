@@ -1,6 +1,7 @@
 import 'package:chattick/core/colors.dart';
 import 'package:chattick/core/media_query.dart';
 import 'package:chattick/core/textstyle.dart';
+import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
 import 'package:chattick/feature/presentation/widget/elevated_button.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -75,13 +76,6 @@ class _StartMsgPageState extends State<StartMsgPage> {
                           ? MediaQueryUtil.heightPercentage(context, 16)
                           : MediaQueryUtil.heightPercentage(context, 8),
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Click on the continue button to receive notification',
-                        style: style().TheSmallHead(context),
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -95,10 +89,7 @@ class _StartMsgPageState extends State<StartMsgPage> {
                             //to generate user token use
                             //await FirebaseMessaging.instance.getToken();
 
-                            FirebaseCM().sendTopicNotification(
-                                'notification', "Coding With Mukund", "Please share and subscribe my channel");
-
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberPage()));
                           },
                         ),
                       ),

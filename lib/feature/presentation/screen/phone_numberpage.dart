@@ -42,7 +42,6 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             bool isPortrait = constraints.maxHeight > constraints.maxWidth;
-
             return SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.all(
@@ -119,7 +118,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                           hintText: 'Phone Number',
                           hintStyle: style().FeildInput(context),
                         ),
-                        keyboardType: TextInputType.numberWithOptions(
+                        keyboardType: const TextInputType.numberWithOptions(
                             signed: true, decimal: true),
                         onSaved: (number) {
                           print('On Saved: $number');
