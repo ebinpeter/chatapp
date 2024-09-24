@@ -1,8 +1,15 @@
-import 'package:chattick/config/firebase.dart';
+import 'dart:io';
 import 'package:chattick/core/firebase_const.dart';
+import 'package:path/path.dart' as path;
+import 'package:chattick/config/firebase.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:chattick/feature/presentation/widget/textfeild.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
 import '../widget/elevated_button.dart';
@@ -19,6 +26,39 @@ final TextEditingController firstNameController = TextEditingController();
 final TextEditingController lastNameController = TextEditingController();
 
 class _DetailsPageState extends State<DetailsPage> {
+  File? _imageFile;
+  bool isLoading = false;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<String?> _uploadImageToFirebase(File? imageFile) async {
+    if (imageFile == null) return null;
+
+    try {
+      String fileName = path.basename(imageFile.path);
+      Reference storageRef = FirebaseStorage.instance.ref().child('profile_images/$fileName');
+      UploadTask uploadTask = storageRef.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+      // Get the download URL of the uploaded image
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      print('Image uploaded successfully: $downloadUrl');
+      return downloadUrl;
+    } catch (e) {
+      print('Failed to upload image: $e');
+      return null;
+    }
+  }
+
+
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -51,26 +91,34 @@ class _DetailsPageState extends State<DetailsPage> {
                           CircleAvatar(
                             radius: isPortrait ? 50 : 40,
                             backgroundColor: Colors.grey[200],
-                            child: Icon(
+                            backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null, // Display selected image
+                            child: _imageFile == null
+                                ? Icon(
                               Icons.person,
                               size: isPortrait ? 50 : 40,
                               color: Colors.black54,
-                            ),
+                            )
+                                : null,
                           ),
                           Positioned(
                             bottom: 0,
                             right: 0,
-                            child: Container(
-                              height: 24,
-                              width: 24,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 16,
+                            child: GestureDetector(
+                              onTap: _pickImage,
+                              child: Container(
+                                height: 24,
+                                width: 24,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: isLoading
+                                    ? const CircularProgressIndicator(strokeWidth: 2, color: Colors.white)
+                                    : const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
                               ),
                             ),
                           ),
@@ -111,17 +159,31 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                       child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: CustomButton(
+                        child:CustomButton(
                           text: "Continue",
                           onPressed: () async {
-                            await FirebaseApi().updateUserDetails(firstNameController.text.trim(), lastNameController.text.trim());
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ContactsList()),
-                            );
+                            // Upload the image first
+                            String? imageUrl = await _uploadImageToFirebase(_imageFile);
+
+                            if (imageUrl != null) {
+                              // Update user details with the image URL
+                              await FirebaseApi().updateUserDetails(
+                                firstNameController.text.trim(),
+                                lastNameController.text.trim(),
+                                imageUrl,
+                              );
+
+                              // Navigate to the ContactsList screen after success
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ContactsList()),
+                              );
+                            } else {
+                              print('Failed to upload image');
+                            }
                           },
                         ),
+
                       ),
                     )
                   ],

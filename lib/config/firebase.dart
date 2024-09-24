@@ -23,14 +23,14 @@ class FirebaseApi extends GetxController {
 
     try {
 
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User is already Login')),
-        );
-        isLoading.value = false;
-        return;
-      }
+      // User? currentUser = FirebaseAuth.instance.currentUser;
+      // if (currentUser != null) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('User is already Login')),
+      //   );
+      //   isLoading.value = false;
+      //   return;
+      // }
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 60),
@@ -118,7 +118,7 @@ class FirebaseApi extends GetxController {
     }
   }
 
-  Future<void> updateUserDetails(String firstName, String lastName) async {
+  Future<void> updateUserDetails(String firstName, String lastName,String imageUrl) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -149,4 +149,5 @@ class FirebaseApi extends GetxController {
       print('No authenticated user found');
     }
   }
+
 }
