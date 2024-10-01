@@ -1,11 +1,8 @@
-import 'package:chattick/feature/presentation/screen/details_page.dart';
-import 'package:chattick/feature/presentation/screen/phone_numberpage.dart';
-import 'package:chattick/feature/presentation/screen/stat_msg_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
-import '../../../config/firebase.dart';
+import '../../../config/firebase_setting/firebase.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
 import '../../../core/textstyle.dart';
@@ -73,7 +70,7 @@ class _OtpPageState extends State<OtpPage> {
                     ),
                     Text(
                       "We have sent you an SMS with the code to +91 55555 55555",
-                      style: style().TheSmallHead(context),
+                      style: style.TheSmallHead(context),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
@@ -143,7 +140,6 @@ class _OtpPageState extends State<OtpPage> {
     }
 
     try {
-      // Verify the OTP using Firebase API
       await firebaseApi.verifyOTP(otp: _otpCode, context: context,authVerificationIdss: widget.verificationId);
       // _navigateToNextPage();
     } catch (e) {

@@ -1,4 +1,7 @@
-import 'package:chattick/config/firebase_messaging.dart';
+
+import 'package:chattick/config/firebase_setting/firebase.dart';
+import 'package:chattick/config/firebase_setting/firebase_messaging.dart';
+import 'package:chattick/feature/presentation/screen/contact.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -12,19 +15,23 @@ Future<void> main() async {
   );
   await FirebaseCM().initNotification();
   await FirebaseCM.subscribeToTopic();
+  var checkislogin = await FirebaseApi().isLogincheck();
   // await FirebaseCM().requestNotificationPermission();
-  runApp(const MyApp());
+  runApp(MyApp(
+    isLogin: checkislogin,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLogin;
+  const MyApp({super.key, required this.isLogin});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:
-            // ContactsList()
-            StartMsgPage());
+        home: isLogin
+            ? const ContactsList() //homepage
+            : const StartMsgPage());
   }
 }

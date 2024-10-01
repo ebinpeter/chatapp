@@ -28,7 +28,7 @@ class style{
       ),
     );
   }
-  TextStyle TheSmallHead(BuildContext context) {
+ static TextStyle TheSmallHead(BuildContext context) {
     return GoogleFonts.mulish(
       textStyle: TextStyle(
         fontWeight: FontWeight.w500,
@@ -38,12 +38,22 @@ class style{
       ),
     );
   }
-  TextStyle FeildInput(BuildContext context) {
+  static TextStyle FeildInput(BuildContext context) {
     return GoogleFonts.mulish(
       textStyle: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 14,
-        color:Coloure().SmalHead,
+        color:Coloure().FeildText,
+
+      ),
+    );
+  }
+  static  TextStyle UserName (BuildContext context) {
+    return GoogleFonts.lato(
+      textStyle: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+        color:Coloure().UserName,
 
       ),
     );

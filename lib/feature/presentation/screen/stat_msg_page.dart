@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-import '../../../config/firebase_messaging.dart';
+import '../../../config/firebase_setting/firebase_messaging.dart';
 
 class StartMsgPage extends StatefulWidget {
   const StartMsgPage({super.key});

@@ -1,15 +1,13 @@
-import 'package:chattick/config/firebase_messaging.dart';
-import 'package:chattick/core/firebase_const.dart';
+import 'package:chattick/config/firebase_setting/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../feature/presentation/screen/details_page.dart';
-import '../feature/presentation/screen/otp_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../feature/presentation/screen/details_page.dart';
+import '../../feature/presentation/screen/otp_page.dart';
 
 class FirebaseApi extends GetxController {
-  // Use Rx variables for reactive state management in GetX
   Rx<String?> authVerificationId = Rx<String?>(null);
   RxBool isCodeSent = false.obs;
   RxBool isLoading = false.obs;
@@ -22,7 +20,6 @@ class FirebaseApi extends GetxController {
     isLoading.value = true; // Set loading state to true
 
     try {
-
       // User? currentUser = FirebaseAuth.instance.currentUser;
       // if (currentUser != null) {
       //   ScaffoldMessenger.of(context).showSnackBar(
@@ -50,8 +47,7 @@ class FirebaseApi extends GetxController {
           isLoading.value = false;
         },
         codeSent: (String verificationId, int? resendToken) {
-          authVerificationId.value =
-              verificationId;
+          authVerificationId.value = verificationId;
           isCodeSent.value = true;
           isLoading.value = false;
 
@@ -78,7 +74,6 @@ class FirebaseApi extends GetxController {
     }
   }
 
-  // Function to verify the OTP entered by the user
   Future<void> verifyOTP(
       {required String otp,
       required BuildContext context,
@@ -90,19 +85,18 @@ class FirebaseApi extends GetxController {
       return;
     }
 
-    // Create credential using the verificationId and OTP entered by the user
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: authVerificationIdss!,
       smsCode: otp,
     );
 
     try {
-      // Sign in with the generated credential
       await _auth.signInWithCredential(credential);
       print("Phone verification successful.");
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Phone verification successful')));
-
+      SharedPreferences sprf = await SharedPreferences.getInstance();
+      sprf.setBool("isLogin", true);
       FirebaseCM().sendTopicNotification('notification', "Welcome to Chattick!",
           "Thank you for joining! Start chatting with your friends and stay connected.");
       Navigator.push(
@@ -118,12 +112,14 @@ class FirebaseApi extends GetxController {
     }
   }
 
-  Future<void> updateUserDetails(String firstName, String lastName,String imageUrl) async {
+  Future<void> updateUserDetails(
+      String firstName, String lastName, String imageUrl) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       String userId = user.uid;
-      DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
+      DocumentReference userDoc =
+          FirebaseFirestore.instance.collection('users').doc(userId);
 
       try {
         DocumentSnapshot docSnapshot = await userDoc.get();
@@ -132,6 +128,7 @@ class FirebaseApi extends GetxController {
           await userDoc.update({
             'firstName': firstName,
             'lastName': lastName,
+            'imageUri':imageUrl
           });
           print('User details updated successfully');
         } else {
@@ -150,4 +147,9 @@ class FirebaseApi extends GetxController {
     }
   }
 
+  Future<bool> isLogincheck() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var login = pref.getBool("isLogin") ?? false;
+    return login;
+  }
 }

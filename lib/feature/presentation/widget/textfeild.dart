@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final bool isRequired;
   final double height;
   final double width;
+  final Function(String)? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -16,7 +17,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     this.isRequired = false,
     required this.height,
-    required this.width,
+    required this.width, this.onChanged,
   }) : super(key: key);
 
   @override
@@ -25,10 +26,11 @@ class CustomTextField extends StatelessWidget {
       height: height,
       width: width,
       child: TextField(
+        onChanged: onChanged,
         controller: controller,
         decoration: InputDecoration(
           hintText: isRequired ? '$labelText (Required)' : labelText,
-          hintStyle: style().FeildInput(context),
+          hintStyle: style.FeildInput(context),
           filled: true,
           fillColor: Coloure().FeildColor,
           border: OutlineInputBorder(

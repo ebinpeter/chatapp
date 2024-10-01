@@ -1,4 +1,4 @@
-import 'package:chattick/config/firebase.dart';
+import 'package:chattick/config/firebase_setting/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -64,7 +64,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                     ),
                     Text(
                       "Please confirm your country code and enter your phone number",
-                      style: style().TheSmallHead(context),
+                      style: style.TheSmallHead(context),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
@@ -104,11 +104,11 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                         ),
                         ignoreBlank: false,
                         autoValidateMode: AutovalidateMode.disabled,
-                        selectorTextStyle: style().FeildInput(context),
+                        selectorTextStyle: style.FeildInput(context),
                         initialValue: number,
                         formatInput: true,
                         cursorColor: Coloure().SmalHead,
-                        textStyle: style().FeildInput(context),
+                        textStyle: style.FeildInput(context),
                         inputDecoration: InputDecoration(
                           filled: true,
                           fillColor: Coloure().FeildColor,
@@ -116,7 +116,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           hintText: 'Phone Number',
-                          hintStyle: style().FeildInput(context),
+                          hintStyle: style.FeildInput(context),
                         ),
                         keyboardType: const TextInputType.numberWithOptions(
                             signed: true, decimal: true),

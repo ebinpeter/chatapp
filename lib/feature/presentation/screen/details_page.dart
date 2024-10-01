@@ -1,14 +1,10 @@
 import 'dart:io';
-import 'package:chattick/core/firebase_const.dart';
+import 'package:chattick/config/firebase_setting/firebase.dart';
 import 'package:path/path.dart' as path;
-import 'package:chattick/config/firebase.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:chattick/feature/presentation/widget/textfeild.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
@@ -48,7 +44,6 @@ class _DetailsPageState extends State<DetailsPage> {
       UploadTask uploadTask = storageRef.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
 
-      // Get the download URL of the uploaded image
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
       print('Image uploaded successfully: $downloadUrl');
       return downloadUrl;
@@ -162,18 +157,15 @@ class _DetailsPageState extends State<DetailsPage> {
                         child:CustomButton(
                           text: "Continue",
                           onPressed: () async {
-                            // Upload the image first
                             String? imageUrl = await _uploadImageToFirebase(_imageFile);
 
                             if (imageUrl != null) {
-                              // Update user details with the image URL
                               await FirebaseApi().updateUserDetails(
                                 firstNameController.text.trim(),
                                 lastNameController.text.trim(),
                                 imageUrl,
                               );
 
-                              // Navigate to the ContactsList screen after success
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => ContactsList()),
