@@ -1,5 +1,7 @@
 import 'package:chattick/core/textstyle.dart';
+import 'package:chattick/feature/presentation/bloc/contact/contacts_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
@@ -99,40 +101,62 @@ class _ContactsListState extends State<ContactsList> {
           builder: (context, constraints) {
             bool isPortrait = constraints.maxHeight > constraints.maxWidth;
 
-            return Padding(
-              padding: EdgeInsets.all(
-                isPortrait
-                    ? MediaQueryUtil.widthPercentage(context, 2)
-                    : MediaQueryUtil.widthPercentage(context, 2),
-              ),
-              child: Column(
-                children: [
-
-                  Expanded(
-                    child: filteredContacts.isEmpty
-                        ? const Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                      itemCount: filteredContacts.length,
-                      itemBuilder: (context, index) {
-                        final contact = filteredContacts[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            child: Text(contact.displayName[0]),
-                          ),
-                          title: Text(
-                            contact.displayName,
-                            style:style.UserName(context)
-                          ),
-                          onTap: () {
-                            // Handle contact tap
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+            return BlocBuilder<ContactsBloc, ContactsState>(
+              builder: (context, state) {
+                if (state is ContactLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ContactError) {
+                  return Center(child: Text(state.message));
+                } else if (state is ContactLoaded) {
+                  final contacts = state.contats;
+                  return ListView.builder(
+                    itemCount: contacts.length,
+                    itemBuilder: (context, index) {
+                      final contact = contacts[index];
+                      return ListTile(
+                        title: Text(contact.displayname),
+                      );
+                    },
+                  );
+                }
+                return const Center(child: Text("No contacts found"));
+              },
             );
+
+            //   Padding(
+            //   padding: EdgeInsets.all(
+            //     isPortrait
+            //         ? MediaQueryUtil.widthPercentage(context, 2)
+            //         : MediaQueryUtil.widthPercentage(context, 2),
+            //   ),
+            //   child: Column(
+            //     children: [
+            //
+            //       Expanded(
+            //         child: filteredContacts.isEmpty
+            //             ? const Center(child: CircularProgressIndicator())
+            //             : ListView.builder(
+            //           itemCount: filteredContacts.length,
+            //           itemBuilder: (context, index) {
+            //             final contact = filteredContacts[index];
+            //             return ListTile(
+            //               leading: CircleAvatar(
+            //                 child: Text(contact.displayName[0]),
+            //               ),
+            //               title: Text(
+            //                 contact.displayName,
+            //                 style:style.UserName(context)
+            //               ),
+            //               onTap: () {
+            //                 // Handle contact tap
+            //               },
+            //             );
+            //           },
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // );
           },
         ),
       ),

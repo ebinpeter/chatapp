@@ -86,7 +86,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           CircleAvatar(
                             radius: isPortrait ? 50 : 40,
                             backgroundColor: Colors.grey[200],
-                            backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null, // Display selected image
+                            backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
                             child: _imageFile == null
                                 ? Icon(
                               Icons.person,

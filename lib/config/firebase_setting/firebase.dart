@@ -1,3 +1,4 @@
+import 'package:chattick/config/firebase_setting/access_firebase_token.dart';
 import 'package:chattick/config/firebase_setting/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -97,8 +98,7 @@ class FirebaseApi extends GetxController {
           SnackBar(content: Text('Phone verification successful')));
       SharedPreferences sprf = await SharedPreferences.getInstance();
       sprf.setBool("isLogin", true);
-      FirebaseCM().sendTopicNotification('notification', "Welcome to Chattick!",
-          "Thank you for joining! Start chatting with your friends and stay connected.");
+      FirebaseCM().sendTopicNotification('notification', "Welcome to Chattick!", "Thank you for joining! Start chatting with your friends and stay connected.");
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -122,13 +122,15 @@ class FirebaseApi extends GetxController {
           FirebaseFirestore.instance.collection('users').doc(userId);
 
       try {
+        String accessToken = await AccessTokenFirebase().getAccessToke();
         DocumentSnapshot docSnapshot = await userDoc.get();
 
         if (docSnapshot.exists) {
-          await userDoc.update({
+          await userDoc.set({
             'firstName': firstName,
             'lastName': lastName,
-            'imageUri':imageUrl
+            'imageUri':imageUrl,
+            'device_token':accessToken
           });
           print('User details updated successfully');
         } else {
