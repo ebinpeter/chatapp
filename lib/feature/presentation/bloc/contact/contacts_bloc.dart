@@ -1,28 +1,23 @@
 import 'package:bloc/bloc.dart';
-import 'package:chattick/feature/domain/entities/contact.dart';
-import 'package:chattick/feature/domain/usecase/get_contacts.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:meta/meta.dart';
 
 part 'contacts_event.dart';
 part 'contacts_state.dart';
 
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
-  final GetContacts getContacts;
-  ContactsBloc(this.getContacts) : super(ContactsInitial()) {
+  ContactsBloc() : super(ContactLoading()) {
     on<fetchContactevent>(_onFetchContacts);
-
   }
-  Future<void> _onFetchContacts(fetchContactevent event, Emitter<ContactsState> emit,) async {
-    emit(ContactLoading());
 
+  Future<void> _onFetchContacts(fetchContactevent event, Emitter<ContactsState> emit) async {
     try {
-      final contacts = await getContacts();
-      if (contacts.isEmpty) {
-        emit(ContactEmpty());
-      } else {
+      if (await FlutterContacts.requestPermission()) {
+        final List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
         emit(ContactLoaded(contacts));
+      } else {
+        emit(ContactError('Permission denied to access contacts.'));
       }
-      // emit(ContactLoaded(contacts));
     } catch (e) {
       emit(ContactError(e.toString()));
     }

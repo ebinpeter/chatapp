@@ -32,7 +32,7 @@ class CustomTextField extends StatelessWidget {
           hintText: isRequired ? '$labelText (Required)' : labelText,
           hintStyle: style.FeildInput(context),
           filled: true,
-          fillColor: Coloure().FeildColor,
+          fillColor: Coloure.FeildColor,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide.none,

@@ -2,6 +2,7 @@ import 'package:chattick/config/firebase_setting/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/colors.dart';
 import '../../../core/textstyle.dart';
 import '../../../core/media_query.dart';
@@ -24,7 +25,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
     super.initState();
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Coloure().BackGround,
+      statusBarColor: Coloure.BackGround,
       statusBarIconBrightness: Brightness.dark,
     ));
   }
@@ -33,10 +34,10 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Coloure().BackGround,
+        backgroundColor: Coloure.BackGround,
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Coloure().BackGround,
+      backgroundColor: Coloure.BackGround,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
@@ -77,7 +78,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                       width: MediaQueryUtil.widthPercentage(
                           context, isPortrait ? 90 : 70),
                       decoration: BoxDecoration(
-                        color: Coloure().FeildColor,
+                        color: Coloure.FeildColor,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       padding: EdgeInsets.all(
@@ -107,11 +108,11 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                         selectorTextStyle: style.FeildInput(context),
                         initialValue: number,
                         formatInput: true,
-                        cursorColor: Coloure().SmalHead,
+                        cursorColor: Coloure.SmalHead,
                         textStyle: style.FeildInput(context),
                         inputDecoration: InputDecoration(
                           filled: true,
-                          fillColor: Coloure().FeildColor,
+                          fillColor: Coloure.FeildColor,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
@@ -137,9 +138,10 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                         alignment: Alignment.bottomCenter,
                         child: CustomButton(
                           text: "Continue",
-                          onPressed: () {
+                          onPressed: () async {
                             String fullPhoneNumber = number.phoneNumber!;
-
+                            SharedPreferences pref = await SharedPreferences.getInstance();
+                            pref.setString("phoneNo", fullPhoneNumber);
                             // Firebase_api().sendOTP(phoneNumber: "9746379976");
                             firebaseApi.sendOTP(
                                 phoneNumber: fullPhoneNumber, context: context);

@@ -1,7 +1,10 @@
 part of 'contacts_bloc.dart';
 
 @immutable
-sealed class ContactsEvent {}
+sealed class ContactsEvent {
+  List<Object> get props => [];
+
+}
 
 class fetchContactevent extends ContactsEvent{}
 

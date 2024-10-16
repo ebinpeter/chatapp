@@ -5,21 +5,24 @@ sealed class ContactsState {}
 
 final class ContactsInitial extends ContactsState {}
 
-abstract class ContactState {}
+abstract class ContactState  {
+  List<Object> get props => [];
+}
 
 class ContactInitial extends ContactsState{}
 
 class ContactLoading extends ContactsState{}
 class ContactEmpty extends ContactsState{}
-
 class ContactLoaded extends ContactsState{
-
-  final List<ContactEntity> contats;
-  ContactLoaded(this.contats);
-
+  final List<Contact> contacts;
+  ContactLoaded(this.contacts);
 }
+
 class ContactError extends ContactsState{
-   final String message;
+
+   late final String message;
+   List<Object> get props => [message];
    ContactError(this.message);
+
 }
 

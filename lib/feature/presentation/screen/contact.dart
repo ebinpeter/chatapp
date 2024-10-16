@@ -16,51 +16,41 @@ class ContactsList extends StatefulWidget {
 
 class _ContactsListState extends State<ContactsList> {
   final TextEditingController searchController = TextEditingController();
-  List<Contact> contacts = [];
-  List<Contact> filteredContacts = [];
   bool isSearching = false;
+
   @override
   void initState() {
-    _fetchContacts();
     super.initState();
-    filteredContacts = contacts;
-    searchController.addListener(_filterContacts);
+    context.read<ContactsBloc>().add(fetchContactevent());
+    searchController.addListener((){
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    searchController.removeListener(_filterContacts);
     searchController.dispose();
     super.dispose();
   }
 
-  Future<void> _fetchContacts() async {
-    if (await FlutterContacts.requestPermission()) {
-      List<Contact> fetchedContacts = await FlutterContacts.getContacts(withProperties: true);
-      setState(() {
-        contacts = fetchedContacts;
-        filteredContacts = contacts;
-      });
-    }
-  }
 
-  void _filterContacts() {
+  List<Contact> _filterContacts(List<Contact> contacts) {
     final query = searchController.text.toLowerCase();
-    setState(() {
-      filteredContacts = contacts
-          .where((contact) =>
-          contact.displayName.toLowerCase().contains(query))
-          .toList();
-    });
+    if (query.isEmpty) {
+      return contacts;
+    }
+    return contacts.where((contact) {
+      return contact.displayName.toLowerCase().contains(query);
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Coloure().BackGround,
+      backgroundColor: Coloure.BackGround,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Coloure().BackGround,
+        backgroundColor: Coloure.BackGround,
         title:Row(
           children: [
             Expanded(
@@ -88,7 +78,6 @@ class _ContactsListState extends State<ContactsList> {
                   isSearching = !isSearching;
                   if (!isSearching) {
                     searchController.clear();
-                    filteredContacts = contacts;
                   }
                 });
               },
@@ -101,26 +90,36 @@ class _ContactsListState extends State<ContactsList> {
           builder: (context, constraints) {
             bool isPortrait = constraints.maxHeight > constraints.maxWidth;
 
-            return BlocBuilder<ContactsBloc, ContactsState>(
-              builder: (context, state) {
-                if (state is ContactLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ContactError) {
-                  return Center(child: Text(state.message));
-                } else if (state is ContactLoaded) {
-                  final contacts = state.contats;
-                  return ListView.builder(
-                    itemCount: contacts.length,
-                    itemBuilder: (context, index) {
-                      final contact = contacts[index];
-                      return ListTile(
-                        title: Text(contact.displayname),
-                      );
-                    },
-                  );
-                }
-                return const Center(child: Text("No contacts found"));
-              },
+            return BlocBuilder<ContactsBloc,ContactsState>(
+                builder: (context, state) {
+                  if(state is ContactLoading ){
+                    return const Center(child: CircularProgressIndicator());
+                  }if(state is ContactError){
+                    return  Text(state.message);
+                  }if(state is ContactLoaded){
+                   final  filteredContacts = _filterContacts(state.contacts);
+
+                    return ListView.builder(
+                      itemCount: filteredContacts.length,
+                      itemBuilder: (BuildContext context,index) {
+                        final contact = filteredContacts[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            child: Text(contact.displayName[0]),
+                          ),
+                          title: Text(
+                            contact.displayName,
+                            style: style.UserName(context),
+                          ),
+                          onTap: () {
+
+                          },
+                        );
+                      },
+                    );
+                  }
+                  return const Center(child: Text("No contacts found"));
+                },
             );
 
             //   Padding(

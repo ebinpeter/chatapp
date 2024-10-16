@@ -23,7 +23,7 @@ class _OtpPageState extends State<OtpPage> {
   void initState() {
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Coloure().BackGround,
+    statusBarColor: Coloure.BackGround,
     statusBarIconBrightness: Brightness.dark,
   ));
 
@@ -33,10 +33,10 @@ class _OtpPageState extends State<OtpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Coloure().BackGround,
+      backgroundColor: Coloure.BackGround,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Coloure().BackGround,
+        backgroundColor: Coloure.BackGround,
         automaticallyImplyLeading: true,
       ),
       body: SafeArea(
@@ -102,7 +102,7 @@ class _OtpPageState extends State<OtpPage> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: Coloure().BigHead,
+          color: Coloure.BigHead,
         ),
       ),
     );
@@ -115,7 +115,7 @@ class _OtpPageState extends State<OtpPage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: Coloure().BigHead,
+              color: Coloure.BigHead,
             ),
           ),
         ),

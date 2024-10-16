@@ -24,7 +24,7 @@ class style{
       textStyle: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 24,
-        color:Coloure().BigHead,
+        color:Coloure.BigHead,
       ),
     );
   }
@@ -33,7 +33,7 @@ class style{
       textStyle: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 14,
-        color:Coloure().SmalHead,
+        color:Coloure.SmalHead,
 
       ),
     );
@@ -43,7 +43,7 @@ class style{
       textStyle: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 14,
-        color:Coloure().FeildText,
+        color:Coloure.FeildText,
 
       ),
     );
@@ -53,7 +53,7 @@ class style{
       textStyle: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 20,
-        color:Coloure().UserName,
+        color:Coloure.UserName,
 
       ),
     );

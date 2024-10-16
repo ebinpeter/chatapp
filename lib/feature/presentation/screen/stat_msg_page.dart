@@ -23,7 +23,7 @@ class _StartMsgPageState extends State<StartMsgPage> {
     super.initState();
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Coloure().BackGround,
+      statusBarColor: Coloure.BackGround,
       statusBarIconBrightness: Brightness.dark,
     ));
   }
@@ -31,7 +31,7 @@ class _StartMsgPageState extends State<StartMsgPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Coloure().BackGround,
+      backgroundColor: Coloure.BackGround,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

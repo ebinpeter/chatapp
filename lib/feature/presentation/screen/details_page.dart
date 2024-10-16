@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chattick/config/firebase_setting/firebase.dart';
+import 'package:chattick/feature/presentation/widget/bottom_navi.dart';
 import 'package:path/path.dart' as path;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Coloure().BackGround,
+      statusBarColor: Coloure.BackGround,
       statusBarIconBrightness: Brightness.dark,
     ));
     // TODO: implement initState
@@ -67,7 +68,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Coloure().BackGround,
+      backgroundColor: Coloure.BackGround,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -168,7 +169,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ContactsList()),
+                                MaterialPageRoute(builder: (context) => const BasePage()),
                               );
                             } else {
                               print('Failed to upload image');
