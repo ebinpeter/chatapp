@@ -1,9 +1,11 @@
+import 'package:chattick/core/firebase_const.dart';
 import 'package:chattick/core/textstyle.dart';
 import 'package:chattick/feature/presentation/bloc/contact/contacts_bloc.dart';
 import 'package:chattick/feature/presentation/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:googleapis/servicecontrol/v2.dart';
 import '../../../core/colors.dart';
 import '../../../core/media_query.dart';
 import '../widget/textfeild.dart';
@@ -35,14 +37,22 @@ class _ContactsListState extends State<ContactsList> {
   }
 
 
-  List<Contact> _filterContacts(List<Contact> contacts) {
+  List<Map<String, dynamic>> _filterContacts(List<Map<String, dynamic>> contacts) {
     final query = searchController.text.toLowerCase();
     if (query.isEmpty) {
       return contacts;
     }
     return contacts.where((contact) {
-      return contact.displayName.toLowerCase().contains(query);
+      return contact['firstName'] != null && contact['firstName'].toLowerCase().contains(query);
     }).toList();
+  }
+
+  String ChatRoomID(String? user1,String? user2){
+    if(user1![0].toLowerCase().codeUnits[0]>user2![0].toLowerCase().codeUnits[0]){
+      return "$user1$user2";
+    }else{
+      return "$user1$user2";
+    }
   }
 
   @override
@@ -98,21 +108,25 @@ class _ContactsListState extends State<ContactsList> {
                   }if(state is ContactError){
                     return  Text(state.message);
                   }if(state is ContactLoaded){
-                   final  filteredContacts = _filterContacts(state.contacts);
+                   final  filteredContacts = _filterContacts(state.users);
                     return ListView.builder(
                       itemCount: filteredContacts.length,
                       itemBuilder: (BuildContext context,index) {
                         final contact = filteredContacts[index];
                         return ListTile(
                           leading: CircleAvatar(
-                            child: Text(contact.displayName[0]),
+                            child: Text(contact["firstName"].isNotEmpty?contact["firstName"][0]:""),
                           ),
                           title: Text(
-                            contact.displayName,
+                           contact["firstName"],
                             style: style.UserName(context),
                           ),
                           onTap: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(userMap: userMap, chatId: chatId),));
+                            String roomID = ChatRoomID(firebaseAuth.currentUser?.displayName, contact["firstName"]);
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                ChatScreen(userMap:contact, chatRoomId: roomID,),
+                            ));
                           },
                         );
                       },

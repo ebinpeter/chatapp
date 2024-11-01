@@ -1,10 +1,15 @@
+import 'package:chattick/core/firebase_const.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
-final Map<String,dynamic>userMap;
-final String chatId;
+  final Map<String, dynamic> userMap;
+  final String chatRoomId;
 
-  const ChatScreen({super.key, required this.userMap, required this.chatId});
+  const ChatScreen({
+    super.key,
+    required this.userMap,
+    required this.chatRoomId,
+  });
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -13,18 +18,25 @@ final String chatId;
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
 
-  final List<Map<String, dynamic>> _messages = [];
+  final Map<String, dynamic> _messages = {};
 
   void _sendMessage() {
     if (_messageController.text.trim().isNotEmpty) {
-      setState(() {
-        _messages.add({
-          'text': _messageController.text.trim(),
+      setState(() async {
+        _messages.addAll({
+          'message': _messageController.text.trim(),
           'isSender': true,
           'time': DateTime.now().toLocal().toString().substring(11, 16),
         });
+        await firestore
+            .collection("chatRoom")
+            .doc(widget.chatRoomId)
+            .collection("chats")
+            .add(_messages);
         _messageController.clear();
       });
+    }else{
+      print("Enter Texts");
     }
   }
 
@@ -35,10 +47,10 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.jpg'),
+              backgroundImage: NetworkImage(widget.userMap["imageUri"]),
             ),
             SizedBox(width: 10),
-            Text(widget.userMap["name"]),
+            Text(widget.userMap["firstName"]),
           ],
         ),
         actions: [
@@ -77,7 +89,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Align(
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
       child: Column(
-        crossAxisAlignment: isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.all(12),
@@ -119,7 +132,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               ),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:chattick/core/firebase_const.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:meta/meta.dart';
 
@@ -15,19 +16,29 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   Future<void> _onFetchContacts(fetchContactevent event, Emitter<ContactsState> emit) async {
     try {
       emit(ContactLoading());
+      // final QuerySnapshot snapshot = await firestore.collection("users").get();
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final uid = user.uid;
+        final QuerySnapshot snapshot = await firestore.collection("users").get();
 
-      if (await FlutterContacts.requestPermission()) {
-        final List<Contact> contacts = await FlutterContacts.getContacts(withProperties: true);
+        final users = snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .where((user) => user['uid'] != uid)
+            .toList();
 
-        final QuerySnapshot snapshot = await firestore.collection("user").get();
-        final users = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+        final USers = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+        emit(ContactLoaded(users));
 
-        emit(ContactLoaded(contacts,users));
       } else {
-        emit(ContactError('Permission denied to access contacts.'));
+        throw Exception("No user is currently logged in.");
       }
+      // final users = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+
+      // Emit loaded state with Firebase users
     } catch (e) {
-      emit(ContactError(e.toString()));
+      emit(ContactError('Failed to fetch users: ${e.toString()}'));
     }
   }
 }
+

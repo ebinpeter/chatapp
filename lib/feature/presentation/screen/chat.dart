@@ -271,7 +271,7 @@ class _ChatPageState extends State<ChatPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatScreen(userMap: usermap, chatId: rooid),
+            builder: (context) => ChatScreen(userMap: usermap, chatRoomId: '',),
           ),
         );}catch(e){
           print("errrr:$e");

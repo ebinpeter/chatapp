@@ -36,6 +36,7 @@ class FirebaseApi extends GetxController {
         verificationCompleted: (PhoneAuthCredential credential) async {
           try {
             await _auth.signInWithCredential(credential);
+
             print(
                 'Phone number automatically verified and user signed in: ${_auth.currentUser}');
           } catch (e) {
@@ -99,7 +100,7 @@ class FirebaseApi extends GetxController {
           SnackBar(content: Text('Phone verification successful')));
       SharedPreferences sprf = await SharedPreferences.getInstance();
       sprf.setBool("isLogin", true);
-      FirebaseCM().sendTopicNotification('notification', "Welcome to Chattick!", "Thank you for joining! Start chatting with your friends and stay connected.");
+      // FirebaseCM().sendTopicNotification('notification', "Welcome to Chattick!", "Thank you for joining! Start chatting with your friends and stay connected.");
       Navigator.push(
         context,
         MaterialPageRoute(
