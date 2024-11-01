@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.jpg'), // Replace with actual image
+              backgroundImage: AssetImage('assets/images/profile.jpg'),
             ),
             SizedBox(width: 10),
             Text(widget.userMap["name"]),

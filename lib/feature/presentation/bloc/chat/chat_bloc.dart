@@ -33,7 +33,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
 
         if (userSnapshot.exists) {
-          emit(CurrentUserLoaded(userSnapshot.data()!)); // emit current user data
+          emit(CurrentUserLoaded(userSnapshot.data()!));
         } else {
           emit(ChatError('No user found with the current UID.'));
         }

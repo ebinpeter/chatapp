@@ -1,5 +1,6 @@
 import 'package:chattick/core/textstyle.dart';
 import 'package:chattick/feature/presentation/bloc/contact/contacts_bloc.dart';
+import 'package:chattick/feature/presentation/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -98,7 +99,6 @@ class _ContactsListState extends State<ContactsList> {
                     return  Text(state.message);
                   }if(state is ContactLoaded){
                    final  filteredContacts = _filterContacts(state.contacts);
-
                     return ListView.builder(
                       itemCount: filteredContacts.length,
                       itemBuilder: (BuildContext context,index) {
@@ -112,7 +112,7 @@ class _ContactsListState extends State<ContactsList> {
                             style: style.UserName(context),
                           ),
                           onTap: () {
-
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(userMap: userMap, chatId: chatId),));
                           },
                         );
                       },

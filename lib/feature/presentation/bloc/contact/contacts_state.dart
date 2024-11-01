@@ -15,7 +15,8 @@ class ContactLoading extends ContactsState{}
 class ContactEmpty extends ContactsState{}
 class ContactLoaded extends ContactsState{
   final List<Contact> contacts;
-  ContactLoaded(this.contacts);
+  final List<Map<String, dynamic>> users;
+  ContactLoaded(this.contacts, this.users);
 }
 
 class ContactError extends ContactsState{
@@ -24,5 +25,14 @@ class ContactError extends ContactsState{
    List<Object> get props => [message];
    ContactError(this.message);
 
+}
+
+class ContactsAndUsersLoaded extends ContactsState{
+  final List<Contact> contacts;
+  final List<Map<String, dynamic>> users;
+  ContactsAndUsersLoaded(this.contacts, this.users);
+
+  @override
+  List<Object> get props => [contacts, users];
 }
 
