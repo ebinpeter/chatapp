@@ -96,10 +96,10 @@ class FirebaseApi extends GetxController {
     try {
       await _auth.signInWithCredential(credential);
       print("Phone verification successful.");
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Phone verification successful')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Phone verification successful')));
       SharedPreferences sprf = await SharedPreferences.getInstance();
       sprf.setBool("isLogin", true);
+
       // FirebaseCM().sendTopicNotification('notification', "Welcome to Chattick!", "Thank you for joining! Start chatting with your friends and stay connected.");
       Navigator.push(
         context,
@@ -170,23 +170,23 @@ class FirebaseApi extends GetxController {
     return login;
   }
 
-  static getuser()async{
-    await firestore.collection("users").snapshots();
-  }
-static  Future<DocumentSnapshot?> fetchCurrentUser() async {
-  try {
-    final String currentUserId = firebaseAuth.currentUser!.uid;
-    final userSnapshot = await firestore.collection('users').doc(currentUserId).get();
-    if (userSnapshot.exists) {
-      print('Current user data fetched: ${userSnapshot.data()}');
-      return userSnapshot;
-    } else {
-      print('No user found with the current UID.');
-      return null;
-    }
-  } catch (e) {
-    print('Error fetching current user: $e');
-    return null;
-  }
-}
+  // static getuser()async{
+  //   await firestore.collection("users").snapshots();
+  // }
+// static  Future<DocumentSnapshot?> fetchCurrentUser() async {
+//   try {
+//     final String currentUserId = firebaseAuth.currentUser!.uid;
+//     final userSnapshot = await firestore.collection('users').doc(currentUserId).get();
+//     if (userSnapshot.exists) {
+//       print('Current user data fetched: ${userSnapshot.data()}');
+//       return userSnapshot;
+//     } else {
+//       print('No user found with the current UID.');
+//       return null;
+//     }
+//   } catch (e) {
+//     print('Error fetching current user: $e');
+//     return null;
+//   }
+// }
 }
