@@ -10,17 +10,17 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   List<DocumentSnapshot> currentUserList = [];
 
-  ChatBloc() : super(ChatLoading()) {
+  ChatBloc() : super(UserLoading()) {
     on<LoadedChat>((event, emit) async {
-      emit(ChatLoading());
+      emit(UserLoading());
       try {
         await emit.forEach(
           FirebaseFirestore.instance.collection('users').snapshots(),
-          onData: (snapshot) => ChatLoaded(snapshot.docs),
-          onError: (error, stackTrace) => ChatError(error.toString()),
+          onData: (snapshot) => UserLoaded(snapshot.docs),
+          onError: (error, stackTrace) => UserError(error.toString()),
         );
       } catch (e) {
-        emit(ChatError(e.toString()));
+        emit(UserError(e.toString()));
       }
     });
     on<LoadCurrentUser>((event, emit) async {
@@ -35,10 +35,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         if (userSnapshot.exists) {
           emit(CurrentUserLoaded(userSnapshot.data()!));
         } else {
-          emit(ChatError('No user found with the current UID.'));
+          emit(UserError('No user found with the current UID.'));
         }
       } catch (e) {
-        emit(ChatError(e.toString()));
+        emit(UserError(e.toString()));
       }
     });
   }

@@ -1,6 +1,7 @@
 import 'package:chattick/config/firebase_setting/access_firebase_token.dart';
 import 'package:chattick/config/firebase_setting/firebase_messaging.dart';
 import 'package:chattick/core/firebase_const.dart';
+import 'package:chattick/feature/data/model/usermodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class FirebaseApi extends GetxController {
   Rx<String?> authVerificationId = Rx<String?>(null);
   RxBool isCodeSent = false.obs;
   RxBool isLoading = false.obs;
+ static UserModel? currentUser;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -127,7 +129,7 @@ class FirebaseApi extends GetxController {
       try {
         String accessToken = await AccessTokenFirebase().getAccessToke();
         DocumentSnapshot docSnapshot = await userDoc.get();
-
+        fetchCurrentUser();
         if (docSnapshot.exists) {
           await userDoc.set({
             'firstName': firstName,
@@ -142,6 +144,7 @@ class FirebaseApi extends GetxController {
           });
           print('User details updated successfully');
         } else {
+          fetchCurrentUser();
           print('Document not found, creating a new one');
           await userDoc.set({
             'firstName': firstName,
@@ -170,23 +173,37 @@ class FirebaseApi extends GetxController {
     return login;
   }
 
-  // static getuser()async{
-  //   await firestore.collection("users").snapshots();
-  // }
-// static  Future<DocumentSnapshot?> fetchCurrentUser() async {
-//   try {
-//     final String currentUserId = firebaseAuth.currentUser!.uid;
-//     final userSnapshot = await firestore.collection('users').doc(currentUserId).get();
-//     if (userSnapshot.exists) {
-//       print('Current user data fetched: ${userSnapshot.data()}');
-//       return userSnapshot;
-//     } else {
-//       print('No user found with the current UID.');
-//       return null;
-//     }
-//   } catch (e) {
-//     print('Error fetching current user: $e');
-//     return null;
-//   }
-// }
+  Future<void> fetchCurrentUser() async {
+    try {
+      final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
+      if (currentUserId == null) {
+        print('No current user is signed in.');
+        currentUser = null;
+        return;
+      }
+
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .get();
+
+      if (userSnapshot.exists) {
+        final userData = userSnapshot.data();
+        if (userData != null) {
+          print('Current user data fetched: $userData');
+          currentUser = UserModel.fromFirestore(userSnapshot);
+        } else {
+          print('No data found in user document.');
+          currentUser = null;
+        }
+      } else {
+        print('No user found with the current UID: $currentUserId');
+        currentUser = null;
+      }
+    } catch (e) {
+      print('Error fetching current user: $e');
+      currentUser = null;
+    }
+  }
 }

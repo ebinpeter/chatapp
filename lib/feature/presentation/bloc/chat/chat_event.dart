@@ -8,4 +8,5 @@ sealed class ChatEvent extends Equatable {
 }
 
 class LoadedChat extends ChatEvent {}
+
 class LoadCurrentUser extends ChatEvent {}

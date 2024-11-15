@@ -4,31 +4,31 @@ sealed class ChatState extends Equatable {
   const ChatState();
 }
 
-final class ChatInitial extends ChatState {
+final class UserInitial extends ChatState {
   @override
   List<Object> get props => [];
 }
 
 
-final class ChatLoading extends ChatState {
+final class UserLoading extends ChatState {
   @override
   List<Object> get props => [];
 }
 
 
-final class ChatLoaded extends ChatState {
+final class UserLoaded extends ChatState {
   final List<QueryDocumentSnapshot> chats;
 
-  const ChatLoaded(this.chats);
+  const UserLoaded(this.chats);
 
   @override
   List<Object> get props => [chats];
 }
 
-final class ChatError extends ChatState {
+final class UserError extends ChatState {
   final String message;
 
-  const ChatError(this.message);
+  const UserError(this.message);
 
   @override
   List<Object> get props => [message];

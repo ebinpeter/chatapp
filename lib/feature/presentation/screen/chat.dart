@@ -99,19 +99,19 @@ class _ChatPageState extends State<ChatPage> {
         Expanded(
           child: BlocBuilder<ChatBloc, ChatState>(
             builder: (context, state) {
-              if (state is ChatLoading) {
+              if (state is UserLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              if (state is ChatError) {
+              if (state is UserError) {
                 return Center(
                   child: Text(state.message),
                 );
               }
-              if (state is ChatLoaded &&  state is  CurrentUserLoaded) {
-                final currentUser = (state as CurrentUserLoaded).currentUser; // Get current user data
-                final chats = (state as ChatLoaded).chats;
+              if (state is UserLoaded&&  state is  CurrentUserLoaded) {
+                final currentUser = (state as CurrentUserLoaded).currentUser;
+                final chats = (state as UserLoaded).chats;
                 return ListView.builder(
                   itemCount: chats.length,
                   itemBuilder: (context, index) {
@@ -175,19 +175,19 @@ class _ChatPageState extends State<ChatPage> {
               Expanded(
                 child: BlocBuilder<ChatBloc, ChatState>(
                   builder: (context, state) {
-                    if (state is ChatLoading) {
+                    if (state is UserLoading) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
-                    if (state is ChatError) {
+                    if (state is UserError) {
                       return Center(
                         child: Text(state.message),
                       );
                     }
-                    if (state is ChatLoaded &&  state is  CurrentUserLoaded) {
+                    if (state is UserLoaded &&  state is  CurrentUserLoaded) {
                       final currentUser = (state as CurrentUserLoaded).currentUser; // Get current user data
-                      final chats = (state as ChatLoaded).chats;
+                      final chats = (state as UserLoaded).chats;
                       return ListView.builder(
                         itemCount: chats.length,
                         itemBuilder: (context, index) {

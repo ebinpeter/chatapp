@@ -1,7 +1,10 @@
+import 'package:chattick/config/firebase_setting/firebase.dart';
 import 'package:chattick/core/firebase_const.dart';
 import 'package:chattick/core/textstyle.dart';
+import 'package:chattick/feature/data/model/usermodel.dart';
 import 'package:chattick/feature/presentation/bloc/contact/contacts_bloc.dart';
 import 'package:chattick/feature/presentation/screen/chat_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -21,6 +24,7 @@ class _ContactsListState extends State<ContactsList> {
   final TextEditingController searchController = TextEditingController();
   bool isSearching = false;
 
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +39,7 @@ class _ContactsListState extends State<ContactsList> {
     searchController.dispose();
     super.dispose();
   }
+
 
 
   List<Map<String, dynamic>> _filterContacts(List<Map<String, dynamic>> contacts) {
@@ -122,7 +127,7 @@ class _ContactsListState extends State<ContactsList> {
                             style: style.UserName(context),
                           ),
                           onTap: () {
-                            String roomID = ChatRoomID(firebaseAuth.currentUser?.displayName, contact["firstName"]);
+                            String roomID = ChatRoomID(FirebaseApi.currentUser!.firstName, contact["firstName"]);
 
                             Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                 ChatScreen(userMap:contact, chatRoomId: roomID,),

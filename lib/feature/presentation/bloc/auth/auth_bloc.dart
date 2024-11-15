@@ -10,22 +10,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseApi firebaseApi;
   AuthBloc(this.firebaseApi) : super(AuthInitial()) {
 
-    on<CheckLoginEvent>((event, emit) async {
-      try {
-        final isLoggedIn = await firebaseApi.isLogincheck();
-        if (isLoggedIn) {
-          emit(AuthLoggedIn());
-        } else {
-          emit(AuthLoggedOut());
-        }
-      } catch (e) {
-        emit(AuthLoggedOut());
-      }
-    });
+    // on<CheckLoginEvent>((event, emit) async {
+    //   try {
+    //     final isLoggedIn = await firebaseApi.isLogincheck();
+    //     if (isLoggedIn) {
+    //       emit(AuthLoggedIn());
+    //     } else {
+    //       emit(AuthLoggedOut());
+    //     }
+    //   } catch (e) {
+    //     emit(AuthLoggedOut());
+    //   }
+    // });
 
     on<CheckLoginAndNavigate>((event, emit) async {
       try {
         final isLoggedIn = await firebaseApi.isLogincheck();
+        firebaseApi.fetchCurrentUser();
         if (isLoggedIn) {
           emit(AuthLoggedIn());
         } else {
